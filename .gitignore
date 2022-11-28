@@ -1,4 +1,4 @@
-
+*.engine
 *.pyc
 *.onnx
-*.engine
+vsr_arch.py
