@@ -8,6 +8,8 @@ my_parser.add_argument("--input", metavar="--input", type=str, help="input model
 my_parser.add_argument("--output", metavar="--output", type=str, help="output model")
 my_parser.add_argument("--height", metavar="--height", type=int, help="height")
 my_parser.add_argument("--width", metavar="--width", type=int, help="width")
+my_parser.add_argument("--trtexec", action="store_true", help="trtexec")
+
 args = my_parser.parse_args()
 
 
@@ -31,7 +33,8 @@ torch.onnx.export(
     output_names=output_names,
     dynamic_axes={'input' : {3 : 'width', 2: 'height'}} )#
 del model
-os.system("python3 -m onnxsim animesr-temp.onnx animesr-sim.onnx")
-os.system(
-    f" trtexec --onnx=animesr-sim.onnx --optShapes=input:1x6x{args.height}x{args.width} --saveEngine={args.output}"
-)
+os.system(f"python3 -m onnxsim animesr-temp.onnx {args.output}.onnx")
+if args.trtexec:
+    os.system(
+        f" trtexec --onnx=animesr-sim.onnx --optShapes=input:1x6x{args.height}x{args.width} --saveEngine={args.output}.engine"
+    )
