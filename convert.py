@@ -1,10 +1,9 @@
 import argparse
 import torch
 import os
-from vsr_arch import MSRSWVSR
+from arch.vsr_arch import MSRSWVSR
 
 my_parser = argparse.ArgumentParser(description=" ")
-my_parser.add_argument("--input", metavar="--input", type=str, help="input model")
 my_parser.add_argument("--output", metavar="--output", type=str, help="output model")
 my_parser.add_argument("--height", metavar="--height", type=int, help="height")
 my_parser.add_argument("--width", metavar="--width", type=int, help="width")
@@ -14,7 +13,7 @@ args = my_parser.parse_args()
 model = MSRSWVSR(num_feat=64, num_block=[5, 3, 2], netscale=4)
 
 
-model.load_state_dict(torch.load(args.input), strict=False)
+model.load_state_dict(torch.load("weights/AnimeSR_v2.pth"), strict=False)
 input_names = ["input"]
 output_names = ["output"]
 f1 = torch.rand((1, 6, args.height, args.width))
