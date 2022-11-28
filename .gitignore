@@ -1,3 +1,6 @@
 *.engine
 *.pyc
 *.onnx
+vsr_arch.py
+*.lwi
+*.mkv
