@@ -23,7 +23,7 @@ x = f1
 torch.onnx.export(
     model,  # model being run
     x,  # model input (or a tuple for multiple inputs)
-    "cain-temp.onnx",  # where to save the model (can be a file or file-like object)
+    "animesr-temp.onnx",  # where to save the model (can be a file or file-like object)
     export_params=True,  # store the trained parameter weights inside the model file
     opset_version=16,  # the ONNX version to export the model to
     do_constant_folding=True,  # whether to execute constant folding for optimization
@@ -31,7 +31,7 @@ torch.onnx.export(
     output_names=output_names,
     dynamic_axes={'input' : {3 : 'width', 2: 'height'}} )#
 del model
-os.system("python3 -m onnxsim cain-temp.onnx cain-sim.onnx")
+os.system("python3 -m onnxsim animesr-temp.onnx animesr-sim.onnx")
 os.system(
-    f" trtexec --onnx=cain-sim.onnx --optShapes=input:1x6x{args.height}x{args.width} --fp16 --saveEngine={args.output}"
+    f" trtexec --onnx=animesr-sim.onnx --optShapes=input:1x6x{args.height}x{args.width} --saveEngine={args.output}"
 )
