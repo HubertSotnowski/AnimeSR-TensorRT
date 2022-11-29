@@ -106,10 +106,11 @@ class MSRSWVSR(nn.Module):
         return out_img, out_state
 
     def forward(self, x):
-        x1, x2 = torch.split(x,3, dim=1)
-        x1 = x1.unsqueeze(0)
-        x2 = x2.unsqueeze(0)
-        x = torch.cat([x1,x2], dim=1)
+        x1, x2, x3 = torch.split(x,3, dim=1)
+        x1=x1.unsqueeze(0)
+        x2=x2.unsqueeze(0)
+        x3=x3.unsqueeze(0)
+        x = torch.cat([x1,x2,x3], dim=1)
         b, n, c, h, w = x.size()
         # initialize previous sr frame and previous hidden state as zero tensor
         out = x.new_zeros(b, c, h * self.netscale, w * self.netscale)
@@ -125,6 +126,4 @@ class MSRSWVSR(nn.Module):
             else:
                 out, state = self.cell(torch.cat((x[:, i - 1], x[:, i], x[:, i + 1]), dim=1), out, state)
             out_l.append(out)
-        kys=torch.unbind(torch.stack(out_l, dim=1),dim=1)[0]
-        print(kys.shape)
-        return kys
+        return torch.unbind(torch.stack(out_l, dim=1),dim=1)[0]

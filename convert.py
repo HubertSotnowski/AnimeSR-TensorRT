@@ -19,9 +19,9 @@ model = MSRSWVSR(num_feat=64, num_block=[5, 3, 2], netscale=4)
 model.load_state_dict(torch.load(args.input), strict=False)
 input_names = ["input"]
 output_names = ["output"]
-f1 = torch.rand((1, 6, args.height, args.width))
+f1 = torch.rand((1, 9, args.height, args.width))
 x = f1
-print(model(f1).shape)
+print(model(f1)[0].shape)
 torch.onnx.export(
     model,  # model being run
     x,  # model input (or a tuple for multiple inputs)
@@ -36,5 +36,5 @@ del model
 os.system(f"python3 -m onnxsim animesr-temp.onnx {args.output}.onnx")
 if args.trtexec:
     os.system(
-        f" trtexec --onnx={args.output}.onnx --optShapes=input:1x6x{args.height}x{args.width} --saveEngine={args.output}.engine"
+        f" trtexec --onnx={args.output}.onnx --optShapes=input:1x9x{args.height}x{args.width} --saveEngine={args.output}.engine"
     )
