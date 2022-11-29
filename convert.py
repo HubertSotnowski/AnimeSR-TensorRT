@@ -22,6 +22,7 @@ output_names = ["output"]
 f1 = torch.rand((1, 9, args.height, args.width))
 x = f1
 print(model(f1)[0].shape)
+
 torch.onnx.export(
     model,  # model being run
     x,  # model input (or a tuple for multiple inputs)
